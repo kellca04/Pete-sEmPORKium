@@ -19,14 +19,20 @@ with app.app_context():
 @app.route('/')
 def shop_front():
     products = Product.query.all()
-    return render_template('shop_front.html', products=products)
+    return render_template('shop_front.html', products=products, not_available=False)
 
 @app.route('/cart')
 def cart():
     cart_products = []
+    total_cost = 0  # Initialize total cost variable
+
     if 'cart' in request.cookies:
         cart_products = json.loads(request.cookies.get('cart')) if request.cookies.get('cart') else []
-    return render_template('cart.html', cart_products=cart_products)
+
+        # Calculate total cost
+        total_cost = sum(product['price'] for product in cart_products)
+
+    return render_template('cart.html', cart_products=cart_products, total_cost=total_cost)
 
 @app.route('/admin')
 def admin():
