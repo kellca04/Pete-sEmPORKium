@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">Pete's Em-PORK-ium</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/cart">Cart</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/">Store</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container mt-3">
+        <h1 class="mb-4">Admin Page</h1>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th>Amount Available</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td>{{ product.id }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.description }}</td>
+                        <td><img src="{{ product.image }}" alt="{{ product.name }}" style="max-width: 100px; max-height: 100px;"></td>
+                        <td>{{ product.amount_available }}</td>
+                        <td>{{ product.price }}</td>
+                        <td>
+                            <form action="{{ url_for('update_availability') }}" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="{{ product.id }}">
+                                <div class="input-group">
+                                    <input type="number" name="availability" class="form-control" placeholder="New Availability" aria-label="New Availability" aria-describedby="update-availability-btn">
+                                    <button class="btn btn-primary" type="submit" id="update-availability-btn">Update</button>
+                                </div>
+                            </form>
+
+                            <form action="{{ url_for('update_price') }}" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="{{ product.id }}">
+                                <div class="input-group">
+                                    <input type="number" name="price" step="0.01" class="form-control" placeholder="New Price" aria-label="New Price" aria-describedby="update-price-btn">
+                                    <button class="btn btn-success" type="submit" id="update-price-btn">Update</button>
+                                </div>
+                            </form>
+
+                            <form action="{{ url_for('remove_product', product_id=product.id) }}" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-danger">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Form for adding a new product -->
+        <div class="mb-4">
+            <h2>Add a New Product</h2>
+            <form action="{{ url_for('add_product') }}" method="post">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name:</label>
+                    <input type="text" name="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description:</label>
+                    <input type="text" name="description" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image:</label>
+                    <input type="text" name="image" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="amount" class="form-label">Amount Available:</label>
+                    <input type="number" name="amount" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price:</label>
+                    <input type="number" name="price" step="0.01" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-success">Add Product</button>
+            </form>
+        </div>
+
+        <a href="{{ url_for('shop_front') }}" class="btn btn-primary">Back to Shop</a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-left">
+                    &copy; 2023 Your Company. All rights reserved.
+                </div>
+                <div class="col-md-6 text-center text-md-right">
+                    <a href="{{ url_for('admin') }}" class="text-white">Admin Page</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

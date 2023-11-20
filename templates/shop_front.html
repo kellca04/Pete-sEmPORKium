@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Front</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">Pete's Em-PORK-ium</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/cart">Cart</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/">Store</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container mt-5">
+        <h1>Welcome to Pete's Em-PORK-ium</h1>
+        
+        {% if not_available %}
+            <p class="text-danger">Sorry, the selected product is not available at the moment.</p>
+        {% endif %}
+
+        <div class="row">
+            {% for product in products %}
+                <div class="col-lg-4">
+                    <div class="card">
+                        <img src="{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">{{ product.description }}</p>
+                            <p class="card-text">Amount Available: {{ product.amount_available }}</p>
+                            <p class="card-text">Price: ${{ product.price }}</p>
+                            <form action="{{ url_for('add_to_cart') }}" method="post">
+                                <input type="hidden" name="product_id" value="{{ product.id }}">
+                                {% if product.amount_available > 0 %}
+                                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                {% else %}
+                                    <button type="button" class="btn btn-secondary" disabled>Not Available</button>
+                                {% endif %}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <footer class="footer mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-left">
+                    &copy; 2023 Your Company. All rights reserved.
+                </div>
+                <div class="col-md-6 text-center text-md-right">
+                    <a href="{{ url_for('admin') }}" class="text-white">Admin Page</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
