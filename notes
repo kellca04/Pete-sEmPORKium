@@ -1,0 +1,7 @@
+Requirments
+inventory database should have - id, name, description, Image, and amount available
+
+Need 3 pages (shop front, admin page, cart page)
+Shop Front -  display the contents of a databate that is created inside the program (use sqlalchemy), each product entry should display the image associated with the product, the name of product, decription of product, amount available, add to cart button (stores information of product and displays it on the cart page, will only be available if the availablity is one or higher) If the add to cart button is pressed, reduce the amount available of that product by 1 and save the values associated with the product in local storage.
+Admin page - display the content of the database and give the user the option on inputting the id of a product and altering the availability of that product. also give the ability to remove a proct from the table. The admin should also be allowed to add a product (with all of the database columns -INCLUDING ADDING AN IMAGE)
+Cart page - This page will display the product entries previously added to the local storage. there should be the option to remove products from the cart, if this happens increase the amount available by 1 for the corresponding id number in the database
