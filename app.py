@@ -120,5 +120,5 @@ def remove_from_cart():
             response.set_cookie('cart', json.dumps(cart), samesite='Lax', max_age=3600)
     return redirect(url_for('cart'))
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
